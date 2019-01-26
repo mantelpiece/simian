@@ -43,7 +43,6 @@ class Canvas extends React.Component {
                         className="scene"
                         width={this.props.width}
                         height={this.props.height}></canvas>
-                <p>{JSON.stringify(this.props)}</p>
             </div>
         );
     }

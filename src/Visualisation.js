@@ -72,7 +72,6 @@ class Visualisation extends React.Component {
                             entities={this.state.entities} 
                             width={this.props.width}
                             height={this.props.height} />
-                    <div><p>{JSON.stringify({...this.state, ...this.props})}</p></div>
             </div>
         );
     }
