@@ -80,20 +80,14 @@ class Simulation {
 
         const ENTITY_COLLISON_LIMIT = 5;
         if (minDistance < ENTITY_COLLISON_LIMIT) {
-            if (++this.collisons > 2) { this.stop = true; }
+            if (++this.collisons > 1) { this.stop = true; }
 
             console.log(`collison ${entity.id} into ${closestEntity.id}`);
 
-            const collisonNormal = vector2.normalise([position[0] - closestEntity.position[0], position[1] - closestEntity.position[1]]);
+            const updatedEntity = physics.collideWithEntity(entity, closestEntity);
+            console.log('new acceleration', updatedEntity.acceleration);
 
-            const reflectedVelocity = physics.reflect(velocity, /* normal */ collisonNormal);
-            const newAcceleration = vector2.add(acceleration, vector2.scale(reflectedVelocity, -2));
-            console.log('entity collison acceleration', JSON.stringify(newAcceleration));
-
-            return {
-                ...entity,
-                acceleration: newAcceleration
-            };
+            return updatedEntity;
         }
 
         return entity;

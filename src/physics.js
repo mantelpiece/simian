@@ -7,6 +7,19 @@ export const reflect = (velocity, normal) => {
     return vector2.add(velocity, scaledNormal)
 }
 
+export const collideWithEntity = (entity, other) => {
+    const collisonVector = vector2.add(entity.position, vector2.scale(other.position, -1));
+    const collisonNormal = vector2.normalise(collisonVector);
+
+    const reflectedVelocity = reflect(entity.velocity, collisonNormal);
+    const newAcceleration = vector2.add(entity.acceleration, vector2.scale(reflectedVelocity, 2));
+
+    return {
+        ...entity,
+        acceleration: newAcceleration
+    };
+}
+
 export const reflectOld = (velocity, normal) => {
     const cosineOfIncidence = vector2.dot(velocity, normal) /
                               (vector2.mag(velocity) * vector2.mag(normal));

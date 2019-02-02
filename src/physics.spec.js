@@ -1,19 +1,46 @@
-const { reflect } = require('./physics');
+import Entity from './Entity';
+import { collideWithEntity, reflect } from './physics';
 
 expect.extend({
     toBeCloseTo(received, expected) {
+        if (!Number.isFinite(received[0]) || !Number.isFinite(received[1])) {
+            return {
+                message: () => `expected ${received} to be close to ${expected}`,
+                pass: false
+            }
+        }
         if (Math.abs(received[0] - expected[0]) > Math.pow(1, -10) ||
             Math.abs(received[1] - expected[1]) > Math.pow(1, -10)) {
             return {
-                message: () => `expected ${received} to be equal to ${expected}`,
+                message: () => `expected ${received} to be close to ${expected}`,
                 pass: false
             };
         }
         return {
-            message: () => `expected ${received} not to be equal to ${expected}`,
+            message: () => `expected ${received} not to be close to ${expected}`,
             pass: true
         };
     }
+});
+
+
+describe('collideWithEntity', () => {
+    describe('when two entities with equal but opposite velocities collide', () => {
+        const entity = new Entity([0, 0], [10, 0], [0, 0])
+        const other = new Entity([5, 0], [-10, 0], [0, 0]);
+
+        it('returns the entity with acceleration to reverse its velocity', () => {
+
+            const bouncedEntity = collideWithEntity(entity, other);
+            const { acceleration: bouncedAcceleration } = bouncedEntity;
+
+            expect(bouncedEntity.acceleration).toBeCloseTo([-20, 0]);
+            expect(bouncedEntity).toEqual({
+                ...entity,
+                acceleration: [-20, 0]
+            })
+        });
+    });
 });
 
 
@@ -22,8 +49,7 @@ expect.extend({
 //
 // -1, 1     1, 1
 
-
-describe('physics', () => {
+describe('reflect', () => {
     const vLeft = [-1, 0];
     const vRight = [1, 0];
     const vUp = [0, -1];
