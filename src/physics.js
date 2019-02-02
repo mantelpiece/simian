@@ -7,9 +7,9 @@ export const reflect = (velocity, normal) => {
     return vector2.add(velocity, scaledNormal)
 }
 
-export const reflectPrime = (velocity, normal) => {
+export const reflectOld = (velocity, normal) => {
     const cosineOfIncidence = vector2.dot(velocity, normal) /
-                              (vector2.mag(velocity) * vector2.mag(normal)); 
+                              (vector2.mag(velocity) * vector2.mag(normal));
     let incidence = Math.acos(cosineOfIncidence);
     console.log('incidence', incidence * 180 / Math.PI);
     while (incidence > Math.PI / 2) incidence = incidence - (Math.PI / 2)

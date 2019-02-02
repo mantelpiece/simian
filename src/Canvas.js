@@ -30,7 +30,7 @@ class Canvas extends React.Component {
                 context.beginPath();
                 context.ellipse(entity.position[0], entity.position[1], 5, 5, 0, 0, TWO_PI);
                 context.fill();
-                
+
                 // this.context.fillRect(entity.position[0], entity.position[1], 50, 50);
             }
         }

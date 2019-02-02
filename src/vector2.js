@@ -2,6 +2,12 @@ export const add = (v1, v2) => {
     return [ v1[0] + v2[0], v1[1] + v2[1] ];
 };
 
+export const angleBetween = (v1, v2) => {
+    const cosineOfInternalAngle = vector2.dot(velocity, normal) /
+        (vector2.mag(velocity) * vector2.mag(normal));
+    return Math.acos(cosineOfInternalAngle);
+};
+
 export const dot = (v1, v2) => {
     return (v1[0] * v2[0]) + (v1[1] * v2[1]);
 };
@@ -9,6 +15,10 @@ export const dot = (v1, v2) => {
 export const mag = (v) => {
     return Math.pow((v[0] * v[0] + v[1] * v[1]), 0.5);
 };
+
+export const normalise = (v) => {
+    return scale(v, 1 / (mag(v)));
+}
 
 export const rotate = (v, angle) => {
     const [x, y] = v;
