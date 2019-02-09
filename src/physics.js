@@ -2,6 +2,7 @@ import * as vector2 from './vector2';
 
 
 export const reflect = (velocity, normal) => {
+    // Formula taken from: https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
     const dotProduct = vector2.dot(velocity, normal);
     const scaledNormal = vector2.scale(normal, -2 * dotProduct)
     return vector2.add(velocity, scaledNormal)
@@ -20,8 +21,15 @@ export const collideWithEntity = (entity, other) => {
         return entity;
     }
 
-    const reflectedVelocity = reflect(entity.velocity, collisonNormal);
+    const netCollisonVelocity = vector2.add(entity.velocity, other.velocity);
+    const netCollisonVelocityNormal = vector2.normalise([-1, 1]);
+
+    const reflectedVelocity = reflect(entity.velocity, netCollisonVelocityNormal);
     const reflectionAcceleration = vector2.add(reflectedVelocity, vector2.scale(entity.velocity, -1));
+
+    // console.debug(`inbound velocity: ${entity.velocity}`);
+    // console.debug(`outbound velocity: ${reflectedVelocity}`);
+    // console.debug(`acceleration ${reflectionAcceleration}`);
 
     return {
         ...entity,

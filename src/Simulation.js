@@ -15,6 +15,8 @@ const randomEntity = (width, height, maxSpeed) => {
     );
 }
 
+const entityCount = 30;
+
 
 class Simulation {
 
@@ -22,11 +24,13 @@ class Simulation {
         this.width = width;
         this.height = height;
 
-        const entityCount = 30;
-        // this.entities = [
-        // new Entity([0, 200], [10, 0], [0, 0]),
-        // new Entity([width, 200], [-10, 0], [0, 0]),
-        // ];
+        /*
+        this.entities = [
+            new Entity([100, 250], [5, 0], [0, 0]),
+            new Entity([150, 150], [0, 10], [0, 0]),
+        ];
+        */
+
         this.entities = [];
         for (let i = 0; i <= entityCount; i++) {
             this.entities.push(randomEntity(width, height, 10));
@@ -79,7 +83,7 @@ class Simulation {
             }
         }, { minDistance: Number.POSITIVE_INFINITY });
 
-        const ENTITY_COLLISON_LIMIT = 5;
+        const ENTITY_COLLISON_LIMIT = 10;
         if (minDistance < ENTITY_COLLISON_LIMIT) {
             console.log(`collison between ${entity.id} and ${closestEntity.id}`);
             return physics.collideWithEntity(entity, closestEntity);
