@@ -22,14 +22,15 @@ class Simulation {
         this.width = width;
         this.height = height;
 
-        const entityCount = 5;
-        this.entities = [
-            new Entity([0, 200], [10, 0], [0, 0]),
-            new Entity([width, 200], [-10, 0], [0, 0]),
-        ];
-        // for (let i = 0; i <= entityCount; i++) {
-        //     this.entities.push(randomEntity(width, height, 10));
-        // }
+        const entityCount = 30;
+        // this.entities = [
+        // new Entity([0, 200], [10, 0], [0, 0]),
+        // new Entity([width, 200], [-10, 0], [0, 0]),
+        // ];
+        this.entities = [];
+        for (let i = 0; i <= entityCount; i++) {
+            this.entities.push(randomEntity(width, height, 10));
+        }
         this.collisons = 0;
     }
 
@@ -80,14 +81,8 @@ class Simulation {
 
         const ENTITY_COLLISON_LIMIT = 5;
         if (minDistance < ENTITY_COLLISON_LIMIT) {
-            if (++this.collisons > 1) { this.stop = true; }
-
-            console.log(`collison ${entity.id} into ${closestEntity.id}`);
-
-            const updatedEntity = physics.collideWithEntity(entity, closestEntity);
-            console.log('new acceleration', updatedEntity.acceleration);
-
-            return updatedEntity;
+            console.log(`collison between ${entity.id} and ${closestEntity.id}`);
+            return physics.collideWithEntity(entity, closestEntity);
         }
 
         return entity;

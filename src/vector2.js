@@ -3,8 +3,8 @@ export const add = (v1, v2) => {
 };
 
 export const angleBetween = (v1, v2) => {
-    const cosineOfInternalAngle = vector2.dot(velocity, normal) /
-        (vector2.mag(velocity) * vector2.mag(normal));
+    const cosineOfInternalAngle = dot(v1, v2) /
+        (mag(v1) * mag(v2));
     return Math.acos(cosineOfInternalAngle);
 };
 

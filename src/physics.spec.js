@@ -9,8 +9,8 @@ expect.extend({
                 pass: false
             }
         }
-        if (Math.abs(received[0] - expected[0]) > Math.pow(1, -10) ||
-            Math.abs(received[1] - expected[1]) > Math.pow(1, -10)) {
+        if (Math.abs(received[0] - expected[0]) > Math.pow(10, -10) ||
+            Math.abs(received[1] - expected[1]) > Math.pow(10, -10)) {
             return {
                 message: () => `expected ${received} to be close to ${expected}`,
                 pass: false
@@ -25,12 +25,13 @@ expect.extend({
 
 
 describe('collideWithEntity', () => {
-    describe('when two entities with equal but opposite velocities collide', () => {
+    describe('given two entities with equal and opposed velocities collide', () => {
+        // Entity to left of collison, travelling right
         const entity = new Entity([0, 0], [10, 0], [0, 0])
+        // Entity to right of collison, travelling left
         const other = new Entity([5, 0], [-10, 0], [0, 0]);
 
-        it('returns the entity with acceleration to reverse its velocity', () => {
-
+        it('returns the first with acceleration to reverse its velocity', () => {
             const bouncedEntity = collideWithEntity(entity, other);
             const { acceleration: bouncedAcceleration } = bouncedEntity;
 
@@ -41,6 +42,98 @@ describe('collideWithEntity', () => {
             })
         });
     });
+
+    describe('given two entities travelling directly away from each other', () => {
+        // Entity to left of collison, travelling left
+        const entity = new Entity([0, 0], [-10, 0], [0, 0])
+        // Entity to right of collison, travelling right
+        const other = new Entity([5, 0], [10, 0], [0, 0]);
+
+
+        it('do not collide', () => {
+            const bouncedEntity = collideWithEntity(entity, other);
+            const { acceleration: bouncedAcceleration } = bouncedEntity;
+
+            expect(bouncedEntity.acceleration).toBeCloseTo([0, 0]);
+            expect(bouncedEntity).toEqual(entity);
+        });
+    });
+
+    describe('given two entities travelling parallel to one another', () => {
+        // Entity to left of collison, travelling down
+        const entity = new Entity([0, 0], [0, 10], [0, 0])
+        // Entity to right of collison, travelling down
+        const other = new Entity([5, 0], [0, 10], [0, 0]);
+
+
+        it('do not collide', () => {
+            const bouncedEntity = collideWithEntity(entity, other);
+            const { acceleration: bouncedAcceleration } = bouncedEntity;
+
+            expect(bouncedEntity.acceleration).toBeCloseTo([0, 0]);
+            expect(bouncedEntity).toEqual(entity);
+        });
+    });
+
+    describe('given two entities travelling collison path just off head-on', () => {
+        // Entity to right of collison, travelling mostly left
+        const entity = new Entity([0, 0], [-20, 1], [0, 0])
+        // Entity to left of collison, travelling mostly right
+        const other = new Entity([-5, 0], [20, 1], [0, 0]);
+
+
+        it('still collide', () => {
+            const bouncedEntity = collideWithEntity(entity, other);
+            const { acceleration: bouncedAcceleration } = bouncedEntity;
+
+            expect(bouncedEntity.acceleration).toBeCloseTo([40, 0]);
+            expect(bouncedEntity).toEqual({
+                ...entity,
+                acceleration: [40, 0]
+            });
+        });
+    });
+
+    describe('given two entities travelling on a very shallow collison path', () => {
+        // Entity to left of collison, travelling very slightly right
+        const entity = new Entity([0, 0], [0.01, 10], [0, 0])
+        // Entity to right of collison, travelling very slightly left
+        const other = new Entity([5, 0], [-0.01, 10], [0, 0]);
+
+        it('still collide', () => {
+            const bouncedEntity = collideWithEntity(entity, other);
+            const { acceleration: bouncedAcceleration } = bouncedEntity;
+
+            expect(bouncedEntity.acceleration).toBeCloseTo([-0.02, 0]);
+            expect(bouncedEntity).toEqual({
+                ...entity,
+                acceleration: [-0.02, 0]
+            });
+        });
+
+    });
+
+    describe('given two entities travelling on a 45 degree collison path', () => {
+        // Entity to left of collison, travelling right
+        const entity = new Entity([0, 0], [10, 10], [0, 0])
+        // Entity to right of collison, travelling left
+        const other = new Entity([5, 0], [-10, 10], [0, 0]);
+
+        it('still collide', () => {
+            const bouncedEntity = collideWithEntity(entity, other);
+            const { acceleration: bouncedAcceleration } = bouncedEntity;
+
+            expect(bouncedEntity.acceleration).toBeCloseTo([-20, 0]);
+            expect(bouncedEntity).toEqual({
+                ...entity,
+                acceleration: [-20, 0]
+            });
+
+        });
+
+    });
+
+
 });
 
 

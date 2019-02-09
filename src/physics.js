@@ -11,12 +11,21 @@ export const collideWithEntity = (entity, other) => {
     const collisonVector = vector2.add(entity.position, vector2.scale(other.position, -1));
     const collisonNormal = vector2.normalise(collisonVector);
 
+    // No collision if the entity is heading away from the collison
+    // That is, the angle between entity and collision normal is <90
+    const collisonAngle = vector2.angleBetween(entity.velocity, collisonNormal);
+    if (collisonAngle < Math.PI / 2 /* 90 degrees */) {
+        // Entity is moving away from the collison (ie, within 90 degrees of the normal)
+        // and therefore there is no collison.
+        return entity;
+    }
+
     const reflectedVelocity = reflect(entity.velocity, collisonNormal);
-    const newAcceleration = vector2.add(entity.acceleration, vector2.scale(reflectedVelocity, 2));
+    const reflectionAcceleration = vector2.add(reflectedVelocity, vector2.scale(entity.velocity, -1));
 
     return {
         ...entity,
-        acceleration: newAcceleration
+        acceleration: vector2.add(entity.acceleration, reflectionAcceleration)
     };
 }
 
