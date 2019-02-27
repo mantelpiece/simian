@@ -20,8 +20,14 @@ class Visualisation extends React.Component {
 
         this.frameTime = 1 / 15;
 
+        this.reset = this.reset.bind(this);
         this.start = this.start.bind(this);
         this.stop = this.stop.bind(this);
+    }
+
+    reset() {
+        this.simulation = new Simulation(this.props.width, this.props.height);
+        return this.simulation;
     }
 
     start() {
@@ -76,6 +82,7 @@ class Visualisation extends React.Component {
         return(
             <div className="Visualisation">
                     <div className="Control">
+                        <button onClick={this.reset}>Reset</button>
                         <button disabled={this.state.animating} onClick={this.start}>Start</button>
                         <button disabled={!this.state.animating} onClick={this.stop}>Stop</button>
                     </div>
