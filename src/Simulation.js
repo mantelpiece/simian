@@ -6,7 +6,7 @@ import * as vector2 from './vector2';
 const randomEntity = (width, height, maxSpeed) => {
     const r = Math.random;
 
-    const speed = () => (r() * 2 * maxSpeed) - (maxSpeed / 2);
+    const speed = () => (r() * 2 * maxSpeed) - maxSpeed;
 
     return new Entity(
         [r() * width, r() * height],
@@ -15,7 +15,7 @@ const randomEntity = (width, height, maxSpeed) => {
     );
 }
 
-const entityCount = 30;
+const entityCount = 10;
 
 
 class Simulation {
@@ -33,7 +33,7 @@ class Simulation {
 
         this.entities = [];
         for (let i = 0; i <= entityCount; i++) {
-            this.entities.push(randomEntity(width, height, 10));
+            this.entities.push(randomEntity(width, height, 200));
         }
         this.collisons = 0;
     }

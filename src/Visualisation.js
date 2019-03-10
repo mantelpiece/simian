@@ -34,30 +34,42 @@ class Visualisation extends React.Component {
         if (this.state.animating) return;
         this.simulation = this.getOrCreateSimulation();
 
-        const interval = setInterval(() => {
-            const entities = this.simulation.step(this.frameTime);
-
-            this.setState(state => ({
-                ...state,
-                entities
-            }));
-        }, this.frameTime);
-
         this.setState(state => ({
             ...state,
-            animating: true,
-            interval
+            animating: true
         }));
+
+        let lastTime = null;
+        const frametime = 1 / 60 * 1000;
+        const update = (time) => {
+            if (!lastTime) lastTime = time;
+            const dt = time - lastTime
+
+            if (dt >= frametime) {
+                const entities = this.simulation.step(dt / 1000 /* dt in seconds */);
+
+                this.setState(state => ({
+                    ...state,
+                    entities
+                }));
+
+                lastTime = time;
+            }
+
+            if (this.state.animating) {
+                window.requestAnimationFrame(update);
+            }
+        };
+
+        window.requestAnimationFrame(update);
     }
 
     stop() {
         if (!this.state.animating) return;
-        clearInterval(this.state.interval);
 
         this.setState(state => ({
             ...state,
-            animating: false,
-            interval: undefined
+            animating: false
         }));
     }
 
@@ -69,6 +81,8 @@ class Visualisation extends React.Component {
     }
 
     renderEntities() {
+        return;
+
         if (this.simulation && this.simulation.entities) {
             const entities = this.simulation.entities.map((entity) => {
                 return(<p key={entity.id}>Entity {entity.id}: speed: {Math.round(vector2.mag(entity.velocity), 1)}, direction: {Math.round(Math.atan(-1*entity.velocity[1] / entity.velocity[0]) * 180 / Math.PI, 0)}</p>);
