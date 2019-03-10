@@ -23,8 +23,29 @@ expect.extend({
     }
 });
 
+const entityWithoutAcceleration = (entity) => {
+    const clone = { ...entity };
+    delete clone.acceleration;
+    return clone;
+};
+
 
 describe('collideWithEntity', () => {
+
+    describe('given two entities travelling at right angles', () => {
+        // Entity to left of collison, travelling left
+        const entity = new Entity([0, 0], [-10, 0], [0, 0])
+        // Entity to right of collison, travelling up
+        const other = new Entity([5, 0], [0, -10], [0, 0]);
+
+        it('reflects around net velocity', () => {
+            const bouncedEntity = collideWithEntity(entity, other);
+            const { acceleration: bouncedAcceleration } = bouncedEntity;
+
+            expect(bouncedEntity.acceleration).toBeCloseTo([10, -10]);
+            expect(bouncedEntity).toEqual(expect.objectContaining(entityWithoutAcceleration(entity)));
+        });
+    });
 
     describe('given two entities travelling at right angles', () => {
         // Entity to left of collison, travelling right
@@ -36,15 +57,11 @@ describe('collideWithEntity', () => {
             const bouncedEntity = collideWithEntity(entity, other);
             const { acceleration: bouncedAcceleration } = bouncedEntity;
 
-            expect(bouncedEntity.acceleration).toBeCloseTo([0, 10]);
-            expect(bouncedEntity).toEqual({
-                ...entity,
-                acceleration: [-20, 0]
-            })
+            expect(bouncedEntity.acceleration).toBeCloseTo([-10, 10]);
+            expect(bouncedEntity).toEqual(expect.objectContaining(entityWithoutAcceleration(entity)));
         });
     });
 
-    /*
     describe('given two entities with equal and opposed velocities collide', () => {
         // Entity to left of collison, travelling right
         const entity = new Entity([0, 0], [10, 0], [0, 0])
@@ -56,13 +73,11 @@ describe('collideWithEntity', () => {
             const { acceleration: bouncedAcceleration } = bouncedEntity;
 
             expect(bouncedEntity.acceleration).toBeCloseTo([-20, 0]);
-            expect(bouncedEntity).toEqual({
-                ...entity,
-                acceleration: [-20, 0]
-            })
+            expect(bouncedEntity).toEqual(expect.objectContaining(entityWithoutAcceleration(entity)));
         });
     });
 
+    /*
     describe('given two entities travelling directly away from each other', () => {
         // Entity to left of collison, travelling left
         const entity = new Entity([0, 0], [-10, 0], [0, 0])
@@ -75,7 +90,7 @@ describe('collideWithEntity', () => {
             const { acceleration: bouncedAcceleration } = bouncedEntity;
 
             expect(bouncedEntity.acceleration).toBeCloseTo([0, 0]);
-            expect(bouncedEntity).toEqual(entity);
+            expect(bouncedEntity).toEqual(expect.objectContaining(entityWithoutAcceleration(entity)));
         });
     });
 
@@ -91,7 +106,7 @@ describe('collideWithEntity', () => {
             const { acceleration: bouncedAcceleration } = bouncedEntity;
 
             expect(bouncedEntity.acceleration).toBeCloseTo([0, 0]);
-            expect(bouncedEntity).toEqual(entity);
+            expect(bouncedEntity).toEqual(expect.objectContaining(entityWithoutAcceleration(entity)));
         });
     });
 
@@ -107,10 +122,7 @@ describe('collideWithEntity', () => {
             const { acceleration: bouncedAcceleration } = bouncedEntity;
 
             expect(bouncedEntity.acceleration).toBeCloseTo([40, 0]);
-            expect(bouncedEntity).toEqual({
-                ...entity,
-                acceleration: [40, 0]
-            });
+            expect(bouncedEntity).toEqual(expect.objectContaining(entityWithoutAcceleration(entity)));
         });
     });
 
@@ -125,10 +137,7 @@ describe('collideWithEntity', () => {
             const { acceleration: bouncedAcceleration } = bouncedEntity;
 
             expect(bouncedEntity.acceleration).toBeCloseTo([-0.02, 0]);
-            expect(bouncedEntity).toEqual({
-                ...entity,
-                acceleration: [-0.02, 0]
-            });
+            expect(bouncedEntity).toEqual(expect.objectContaining(entityWithoutAcceleration(entity)));
         });
 
     });
@@ -144,16 +153,12 @@ describe('collideWithEntity', () => {
             const { acceleration: bouncedAcceleration } = bouncedEntity;
 
             expect(bouncedEntity.acceleration).toBeCloseTo([-20, 0]);
-            expect(bouncedEntity).toEqual({
-                ...entity,
-                acceleration: [-20, 0]
-            });
-
+            expect(bouncedEntity).toEqual(expect.objectContaining(entityWithoutAcceleration(entity)));
         });
 
     });
-    */
 
+    */
 
 });
 

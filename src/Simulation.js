@@ -35,6 +35,7 @@ class Simulation {
         for (let i = 0; i <= entityCount; i++) {
             this.entities.push(randomEntity(width, height, 200));
         }
+
         this.collisons = 0;
     }
 

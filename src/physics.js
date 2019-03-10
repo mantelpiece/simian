@@ -14,22 +14,43 @@ export const collideWithEntity = (entity, other) => {
 
     // No collision if the entity is heading away from the collison
     // That is, the angle between entity and collision normal is <90
+    /* This works on a wrong assumption */
     const collisonAngle = vector2.angleBetween(entity.velocity, collisonNormal);
-    if (collisonAngle < Math.PI / 2 /* 90 degrees */) {
+    if (collisonAngle < Math.PI / 2) {
         // Entity is moving away from the collison (ie, within 90 degrees of the normal)
         // and therefore there is no collison.
         return entity;
     }
 
     const netCollisonVelocity = vector2.add(entity.velocity, other.velocity);
-    const netCollisonVelocityNormal = vector2.normalise([-1, 1]);
+    let netCollisonVelocityNormal;
+    if (Math.abs(netCollisonVelocity[0]) < Math.pow(10, -10) ||
+        Math.abs(netCollisonVelocity[1]) < Math.pow(10, -10)) {
+        netCollisonVelocityNormal = vector2.scale(entity.velocity, -1 / vector2.mag(entity.velocity));
+    } else {
+        // Need to pick direction to rotate to get normal - no idea how?
+        netCollisonVelocityNormal = vector2.normalise(vector2.rotate(netCollisonVelocity, Math.PI / 2));
+        const angle = vector2.angleBetween(entity.velocity, netCollisonVelocityNormal);
+        if (angle < Math.PI / 2) {
+            netCollisonVelocityNormal = vector2.scale(netCollisonVelocityNormal, -1);
+        }
+    }
 
     const reflectedVelocity = reflect(entity.velocity, netCollisonVelocityNormal);
-    const reflectionAcceleration = vector2.add(reflectedVelocity, vector2.scale(entity.velocity, -1));
+    const reflectedVelocityMagnitude = vector2.mag(reflectedVelocity);
 
-    // console.debug(`inbound velocity: ${entity.velocity}`);
-    // console.debug(`outbound velocity: ${reflectedVelocity}`);
-    // console.debug(`acceleration ${reflectionAcceleration}`);
+    // Mess around with energy economy.
+    const collisonEnergy = 1 * Math.pow(vector2.mag(entity.velocity), 2);
+                         + 1 * Math.pow(vector2.mag(other.velocity), 2);
+    const targetEnergy = 0.5 * collisonEnergy;
+    const targetSpeed = Math.sqrt(targetEnergy / 1);
+
+    const scaledReflectedVelocity = vector2.scale(reflectedVelocity, targetSpeed / reflectedVelocityMagnitude);
+    const reflectionAcceleration = vector2.add(scaledReflectedVelocity, vector2.scale(entity.velocity, -1));
+
+    console.debug(`inbound velocity: ${entity.velocity}`);
+    console.debug(`outbound velocity: ${scaledReflectedVelocity}`);
+    console.debug(`acceleration ${reflectionAcceleration}`);
 
     return {
         ...entity,
