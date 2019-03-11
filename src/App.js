@@ -13,7 +13,7 @@ class App extends React.Component {
     render() {
         return(
             <div className="App">
-                <Visualisation width={800} height={800}/>
+                <Visualisation width={400} height={400}/>
             </div>
         );
     }

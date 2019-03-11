@@ -21,11 +21,9 @@ export const collideWithEntity = (entity, other) => {
 
     const v1_contact = vector2.project(v1_, lineOfCollision_n);
     const v1_contact_mag = vector2.projectScalar(v1_, lineOfCollision_n);
-    console.debug('v1', v1_contact_mag)
 
     // const v2_contact = vector2.project(v2_, lineOfCollision_n);
     const v2_contact_mag = vector2.projectScalar(v2_, lineOfCollision_n);
-    console.debug('v2', v2_contact_mag)
 
     // v1_contact + v1_tangent = v1;
     const v1_tangent = vector2.sub(v1_, v1_contact);
@@ -44,11 +42,8 @@ export const collideWithEntity = (entity, other) => {
     const m1 = 1;
     const v2 = v2_contact_mag;
     const m2 = 1;
-    // const next_v1_contact_mag = ((2*m2*v2) - (m2 * v1) + (m1 * v1)) / (m1 + m2);
-
-    const next_v1_contact_mag = (m1 - m2)/(m1 + m2)*v1 + 2*m2/(m1+m2)*v2;
-
-    console.debug('next v1 mag', next_v1_contact_mag);
+    const next_v1_contact_mag = ((2*m2*v2) - (m2 * v1) + (m1 * v1)) / (m1 + m2);
+    // const next_v1_contact_mag = (m1 - m2)/(m1 + m2)*v1 + 2*m2/(m1+m2)*v2; // another solution
 
     const next_v1_contact = vector2.scale(lineOfCollision_n, next_v1_contact_mag)
     const next_v1 = vector2.add(v1_tangent, next_v1_contact);
@@ -58,25 +53,8 @@ export const collideWithEntity = (entity, other) => {
     const acceleration = vector2.sub(next_v1, v1_);
     const finalAcceleration = vector2.add(entity.acceleration, acceleration);
 
-
     return {
         ...entity,
         acceleration: finalAcceleration
     };
 }
-
-export const reflectOld = (velocity, normal) => {
-    const cosineOfIncidence = vector2.dot(velocity, normal) /
-                              (vector2.mag(velocity) * vector2.mag(normal));
-    let incidence = Math.acos(cosineOfIncidence);
-    console.log('incidence', incidence * 180 / Math.PI);
-    while (incidence > Math.PI / 2) incidence = incidence - (Math.PI / 2)
-
-    const angleBetween = 2 * incidence;
-
-    // No idea how to determine this one.
-    const rotationDirection = 1 // or -1 to rotate counter clockwise
-
-    return vector2.rotate(velocity, rotationDirection * angleBetween)
-};
-
