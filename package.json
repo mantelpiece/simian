@@ -11,23 +11,23 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.2.3",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/core": "7.3.4",
+    "@babel/preset-env": "7.3.4",
+    "@babel/preset-react": "7.0.0",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
-    "babel-loader": "^8.0.4",
-    "css-loader": "^2.1.0",
-    "jest": "^23.6.0",
-    "style-loader": "^0.23.1",
-    "webpack": "^4.28.2",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.14"
+    "babel-jest": "24.3.1",
+    "babel-loader": "8.0.5",
+    "css-loader": "2.1.1",
+    "jest": "24.3.1",
+    "style-loader": "0.23.1",
+    "webpack": "4.29.6",
+    "webpack-cli": "3.2.3",
+    "webpack-dev-server": "3.2.1"
   },
   "dependencies": {
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-hot-loader": "^4.6.3"
+    "react": "16.8.4",
+    "react-dom": "16.8.4",
+    "react-hot-loader": "4.8.0"
   },
   "jest": {
     "rootDir": "./src",
@@ -44,8 +44,7 @@
     "coverageReporters": [
       "lcov"
     ],
-    "coveragePathIgnorePatterns": [
-    ],
+    "coveragePathIgnorePatterns": [],
     "testEnvironment": "node",
     "verbose": true
   }
