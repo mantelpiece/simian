@@ -1,4 +1,4 @@
-import { angleBetween } from './vector2';
+import { angleBetween, project } from './vector2';
 
 describe('angleBetween', () => {
     it('should return 0 for vectors with the same direction', () => {
@@ -18,4 +18,27 @@ describe('angleBetween', () => {
         const v2 = [0, -10]
         expect(angleBetween(v1, v2)).toEqual(Math.PI / 2);
     });
+});
+
+describe('project', () => {
+    describe('when projecting [3, 5]', () => {
+
+        it('onto the base, normal vector [1, 0], [3, 0] is returned', () => {
+            const base = [1, 0];
+            const v = [3, 5];
+            expect(project(v, base)).toEqual([3, 0]);
+        });
+
+    });
+
+    describe('when projecting [3, 5]', () => {
+
+        it('onto the base, normal vector [0, 1], [0, 5] is returned', () => {
+            const base = [1, 0];
+            const v = [3, 5];
+            expect(project(v, base)).toEqual([3, 0]);
+        });
+
+    });
+
 });

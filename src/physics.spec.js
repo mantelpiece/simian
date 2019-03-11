@@ -32,6 +32,23 @@ const entityWithoutAcceleration = (entity) => {
 
 describe('collideWithEntity', () => {
 
+    describe('given two entities with equal and opposed velocities collide', () => {
+        // Entity to left of collison, travelling right
+        const entity = new Entity([0, 0], [10, 0], [0, 0])
+        // Entity to right of collison, travelling left
+        const other = new Entity([5, 0], [-10, 0], [0, 0]);
+
+        it('returns the first with acceleration to reverse its velocity', () => {
+            const bouncedEntity = collideWithEntity(entity, other);
+            const { acceleration: bouncedAcceleration } = bouncedEntity;
+
+            expect(bouncedEntity.acceleration).toBeCloseTo([-20, 0]);
+            expect(bouncedEntity).toEqual(expect.objectContaining(entityWithoutAcceleration(entity)));
+        });
+
+    });
+
+    /*
     describe('given two entities travelling at right angles', () => {
         // Entity to left of collison, travelling left
         const entity = new Entity([0, 0], [-10, 0], [0, 0])
@@ -62,22 +79,6 @@ describe('collideWithEntity', () => {
         });
     });
 
-    describe('given two entities with equal and opposed velocities collide', () => {
-        // Entity to left of collison, travelling right
-        const entity = new Entity([0, 0], [10, 0], [0, 0])
-        // Entity to right of collison, travelling left
-        const other = new Entity([5, 0], [-10, 0], [0, 0]);
-
-        it('returns the first with acceleration to reverse its velocity', () => {
-            const bouncedEntity = collideWithEntity(entity, other);
-            const { acceleration: bouncedAcceleration } = bouncedEntity;
-
-            expect(bouncedEntity.acceleration).toBeCloseTo([-20, 0]);
-            expect(bouncedEntity).toEqual(expect.objectContaining(entityWithoutAcceleration(entity)));
-        });
-    });
-
-    /*
     describe('given two entities travelling directly away from each other', () => {
         // Entity to left of collison, travelling left
         const entity = new Entity([0, 0], [-10, 0], [0, 0])

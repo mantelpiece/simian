@@ -9,52 +9,59 @@ export const reflect = (velocity, normal) => {
 }
 
 export const collideWithEntity = (entity, other) => {
-    const collisonVector = vector2.add(entity.position, vector2.scale(other.position, -1));
-    const collisonNormal = vector2.normalise(collisonVector);
+    // When two entities collide only the component of their velocities along the line of
+    // collison are affected.
 
-    // No collision if the entity is heading away from the collison
-    // That is, the angle between entity and collision normal is <90
-    /* This works on a wrong assumption */
-    const collisonAngle = vector2.angleBetween(entity.velocity, collisonNormal);
-    if (collisonAngle < Math.PI / 2) {
-        // Entity is moving away from the collison (ie, within 90 degrees of the normal)
-        // and therefore there is no collison.
-        return entity;
-    }
+    const v1_ = entity.velocity;
+    const v2_ = other.velocity;
 
-    const netCollisonVelocity = vector2.add(entity.velocity, other.velocity);
-    let netCollisonVelocityNormal;
-    if (Math.abs(netCollisonVelocity[0]) < Math.pow(10, -10) ||
-        Math.abs(netCollisonVelocity[1]) < Math.pow(10, -10)) {
-        netCollisonVelocityNormal = vector2.scale(entity.velocity, -1 / vector2.mag(entity.velocity));
-    } else {
-        // Need to pick direction to rotate to get normal - no idea how?
-        netCollisonVelocityNormal = vector2.normalise(vector2.rotate(netCollisonVelocity, Math.PI / 2));
-        const angle = vector2.angleBetween(entity.velocity, netCollisonVelocityNormal);
-        if (angle < Math.PI / 2) {
-            netCollisonVelocityNormal = vector2.scale(netCollisonVelocityNormal, -1);
-        }
-    }
+    // const lineOfCollision_n = vector2.normalise(vector2.sub(entity.position, other.position));
+    // const contactAngle = vector2.angleBetween(v1, lineOfCollision)
+    const lineOfCollision_n = [1, 0];
 
-    const reflectedVelocity = reflect(entity.velocity, netCollisonVelocityNormal);
-    const reflectedVelocityMagnitude = vector2.mag(reflectedVelocity);
+    const v1_contact = vector2.project(v1_, lineOfCollision_n);
+    const v1_contact_mag = vector2.projectScalar(v1_, lineOfCollision_n);
+    console.debug('v1', v1_contact_mag)
 
-    // Mess around with energy economy.
-    const collisonEnergy = 1 * Math.pow(vector2.mag(entity.velocity), 2);
-                         + 1 * Math.pow(vector2.mag(other.velocity), 2);
-    const targetEnergy = 0.5 * collisonEnergy;
-    const targetSpeed = Math.sqrt(targetEnergy / 1);
+    // const v2_contact = vector2.project(v2_, lineOfCollision_n);
+    const v2_contact_mag = vector2.projectScalar(v2_, lineOfCollision_n);
+    console.debug('v2', v2_contact_mag)
 
-    const scaledReflectedVelocity = vector2.scale(reflectedVelocity, targetSpeed / reflectedVelocityMagnitude);
-    const reflectionAcceleration = vector2.add(scaledReflectedVelocity, vector2.scale(entity.velocity, -1));
+    // v1_contact + v1_tangent = v1;
+    const v1_tangent = vector2.sub(v1_, v1_contact);
 
-    console.debug(`inbound velocity: ${entity.velocity}`);
-    console.debug(`outbound velocity: ${scaledReflectedVelocity}`);
-    console.debug(`acceleration ${reflectionAcceleration}`);
+    // Two facts - conservation of momentum and kinetic energy
+    // a) v1' - v2' = v2 - v1
+    // => v2' = v1' - v2 + v1
+    //
+    // b) m1v1' + m2v2' = m1v1 + m2v2
+    // => m1v1' + m2(v1' - v2 + v1) = m1v1 + m2v2
+    // => (m1 + m2)v1' - m2v2 + mv2v1 = m1v1 + m2v2
+    // => (m1 + m2)v1' = 2m2v2 - m2v1 + m1v1
+    // => v1' = (2m2v2 - m2v1 + m1v1) / (m1 + m2)
+
+    const v1 = v1_contact_mag;
+    const m1 = 1;
+    const v2 = v2_contact_mag;
+    const m2 = 1;
+    // const next_v1_contact_mag = ((2*m2*v2) - (m2 * v1) + (m1 * v1)) / (m1 + m2);
+
+    const next_v1_contact_mag = (m1 - m2)/(m1 + m2)*v1 + 2*m2/(m1+m2)*v2;
+
+    console.debug('next v1 mag', next_v1_contact_mag);
+
+    const next_v1_contact = vector2.scale(lineOfCollision_n, next_v1_contact_mag)
+    const next_v1 = vector2.add(v1_tangent, next_v1_contact);
+
+    // next_v1 = v1 + acceleration
+    // acceleration = next_v1 - v1
+    const acceleration = vector2.sub(next_v1, v1_);
+    const finalAcceleration = vector2.add(entity.acceleration, acceleration);
+
 
     return {
         ...entity,
-        acceleration: vector2.add(entity.acceleration, reflectionAcceleration)
+        acceleration: finalAcceleration
     };
 }
 
