@@ -119,7 +119,6 @@ class Simulation {
             };
         };
 
-        const newAcceleration = [0, 0];
         if (position[0] < 5 && velocity[0] < 0) {
             return performCollison([1, 0]);
         } else if (position[0] > (this.width - 5) && velocity[0] > 0) {

@@ -4,10 +4,21 @@
         "node": true,
         "jest": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
     "parserOptions": {
         "ecmaVersion": 2018,
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     },
     "rules": {
         "indent": [
@@ -26,8 +37,9 @@
             "error",
             "always"
         ],
-        "no-use-before-define", [
-            "error"
+        "no-use-before-define": [
+            "error",
+            "nofunc"
         ]
     }
 }

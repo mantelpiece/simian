@@ -7,7 +7,7 @@ expect.extend({
             return {
                 message: () => `expected ${received} to be close to ${expected}`,
                 pass: false
-            }
+            };
         }
         if (Math.abs(received[0] - expected[0]) > Math.pow(10, -10) ||
             Math.abs(received[1] - expected[1]) > Math.pow(10, -10)) {
@@ -34,7 +34,7 @@ describe('collideWithEntity', () => {
 
     describe('given two entities with equal and opposed velocities collide', () => {
         // Entity to left of collison, travelling right
-        const entity = new Entity([0, 0], [10, 0], [0, 0])
+        const entity = new Entity([0, 0], [10, 0], [0, 0]);
         // Entity to right of collison, travelling left
         const other = new Entity([5, 0], [-10, 0], [0, 0]);
 
@@ -42,7 +42,7 @@ describe('collideWithEntity', () => {
             const bouncedEntity = collideWithEntity(entity, other);
             const { acceleration: bouncedAcceleration } = bouncedEntity;
 
-            expect(bouncedEntity.acceleration).toBeCloseTo([-20, 0]);
+            expect(bouncedAcceleration).toBeCloseTo([-20, 0]);
             expect(bouncedEntity).toEqual(expect.objectContaining(entityWithoutAcceleration(entity)));
         });
 

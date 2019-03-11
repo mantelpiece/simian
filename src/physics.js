@@ -4,9 +4,9 @@ import * as vector2 from './vector2';
 export const reflect = (velocity, normal) => {
     // Formula taken from: https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
     const dotProduct = vector2.dot(velocity, normal);
-    const scaledNormal = vector2.scale(normal, -2 * dotProduct)
-    return vector2.add(velocity, scaledNormal)
-}
+    const scaledNormal = vector2.scale(normal, -2 * dotProduct);
+    return vector2.add(velocity, scaledNormal);
+};
 
 export const collideWithEntity = (entity, other) => {
     // When two entities collide only the component of their velocities along the line of
@@ -45,7 +45,7 @@ export const collideWithEntity = (entity, other) => {
     const next_v1_contact_mag = ((2*m2*v2) - (m2 * v1) + (m1 * v1)) / (m1 + m2);
     // const next_v1_contact_mag = (m1 - m2)/(m1 + m2)*v1 + 2*m2/(m1+m2)*v2; // another solution
 
-    const next_v1_contact = vector2.scale(lineOfCollision_n, next_v1_contact_mag)
+    const next_v1_contact = vector2.scale(lineOfCollision_n, next_v1_contact_mag);
     const next_v1 = vector2.add(v1_tangent, next_v1_contact);
 
     // next_v1 = v1 + acceleration
@@ -57,4 +57,4 @@ export const collideWithEntity = (entity, other) => {
         ...entity,
         acceleration: finalAcceleration
     };
-}
+};
