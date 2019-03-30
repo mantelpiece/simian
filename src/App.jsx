@@ -67,6 +67,16 @@ class App extends React.Component {
         window.requestAnimationFrame(update);
     }
 
+    step = () => {
+        if (this.state.animating) return;
+
+        const entities = this.simulation.step(0.1 /* seconds */);
+        this.setState(state => ({
+            ...state,
+            entities
+        }));
+    }
+
     stop = () => {
         if (!this.state.animating) return;
 
@@ -89,7 +99,7 @@ class App extends React.Component {
                 <div className="sim-row">
                     <div  className="sim-rowitem">
                         <Visualisation
-                            render={this.state.animating}
+                            render={true}
                             entities={this.state.entities}
                             width={400}
                             height={400} />
@@ -99,6 +109,7 @@ class App extends React.Component {
                             animating={this.state.animating}
                             reset={this.reset}
                             start={this.start}
+                            step={this.step}
                             stop={this.stop} />
                     </div>
                 </div>

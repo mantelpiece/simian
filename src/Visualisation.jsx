@@ -39,10 +39,10 @@ class Visualisation extends React.Component {
 
 
 Visualisation.propTypes = {
-    render: PropTypes.bool,
-    entities: PropTypes.array,
-    width: PropTypes.number,
-    height: PropTypes.number
+    render: PropTypes.bool.isRequired,
+    entities: PropTypes.array.isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired
 };
 
 
