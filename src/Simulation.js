@@ -40,7 +40,7 @@ class Simulation {
         this.height = height;
         this.entityCount = entityCount;
 
-        this.entities = createHorizontallyOpposedEntities(this.entityCount, width, height);
+        // this.entities = createHorizontallyOpposedEntities(this.entityCount, width, height);
         this.entities = createRandomEntities(this.entityCount, width, height);
 
         this.stop = false;
@@ -56,7 +56,6 @@ class Simulation {
     }
 
     updateEntity(dt, entity, others) {
-        // return this.applyEntityCollison(dt, this.applyWallCollison(dt, this.applyPhysics(dt, entity)), others);
         return this.applyPhysics(dt, this.applyEntityCollison(dt, this.applyWallCollison(dt, entity), others));
     }
 

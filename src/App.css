@@ -1,4 +1,15 @@
 .App {
-    margin: 1rem;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.sim-row {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.sim-rowitem {
+    flex: content;
+    margin: 1rem;
 }

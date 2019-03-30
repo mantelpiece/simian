@@ -9,7 +9,7 @@
     "test": "npm run check && npm run test:unit",
     "test:unit": "npx jest",
     "check": "npm run check:eslint",
-    "check:eslint": "npx eslint src"
+    "check:eslint": "npx eslint --ext .js --ext .jsx src"
   },
   "author": "",
   "license": "ISC",

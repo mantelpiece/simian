@@ -1,8 +1,5 @@
 import React from 'react';
-
-
-import Entity from './Entity';
-import * as Vector2 from './vector2';
+import PropTypes from 'prop-types';
 
 
 import './Canvas.css';
@@ -26,12 +23,9 @@ class Canvas extends React.Component {
             context.clearRect(0, 0, this.props.width, this.props.height);
             context.fillStyle = 'grey';
             for (const entity of this.props.entities) {
-
                 context.beginPath();
                 context.ellipse(entity.position[0], entity.position[1], 5, 5, 0, 0, TWO_PI);
                 context.fill();
-
-                // this.context.fillRect(entity.position[0], entity.position[1], 50, 50);
             }
         }
     }
@@ -39,13 +33,22 @@ class Canvas extends React.Component {
     render() {
         return(
             <div className="Canvas">
-                <canvas ref="canvas"
-                        className="scene"
-                        width={this.props.width}
-                        height={this.props.height}></canvas>
+                <canvas
+                    ref="canvas"
+                    className="scene"
+                    width={this.props.width}
+                    height={this.props.height}></canvas>
             </div>
         );
     }
+}
+
+
+Canvas.propTypes = {
+    render: PropTypes.bool,
+    entities: PropTypes.array,
+    width: PropTypes.number,
+    height: PropTypes.number
 };
 
-export default Canvas
+export default Canvas;
