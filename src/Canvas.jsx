@@ -11,6 +11,7 @@ const TWO_PI = 2 * Math.PI;
 class Canvas extends React.Component {
     constructor() {
         super();
+        this.canvasRef = React.createRef();
     }
 
     componentDidUpdate() {
@@ -19,7 +20,7 @@ class Canvas extends React.Component {
 
     updateCanvas() {
         if (this.props.render) {
-            const context = this.refs.canvas.getContext('2d');
+            const context = this.canvasRef.current.getContext('2d');
             context.clearRect(0, 0, this.props.width, this.props.height);
             context.fillStyle = 'grey';
             for (const entity of this.props.entities) {
@@ -34,7 +35,7 @@ class Canvas extends React.Component {
         return(
             <div className="Canvas">
                 <canvas
-                    ref="canvas"
+                    ref={this.canvasRef}
                     className="scene"
                     width={this.props.width}
                     height={this.props.height}></canvas>
