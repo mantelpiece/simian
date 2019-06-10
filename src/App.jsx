@@ -1,5 +1,6 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
+import CssBaseLine from '@material-ui/core/CssBaseline';
 
 
 import './App.css';
@@ -95,25 +96,28 @@ class App extends React.Component {
 
     render = () => {
         return(
-            <div className="sim-App">
-                <div className="sim-row">
-                    <div  className="sim-rowitem">
-                        <Visualisation
-                            render={true}
-                            entities={this.state.entities}
-                            width={400}
-                            height={400} />
-                    </div>
-                    <div  className="sim-rowitem">
-                        <Controls className="sim-rowitem"
-                            animating={this.state.animating}
-                            reset={this.reset}
-                            start={this.start}
-                            step={this.step}
-                            stop={this.stop} />
+            <React.Fragment>
+                <CssBaseLine />
+                <div className="sim-App">
+                    <div className="sim-row">
+                        <div  className="sim-rowitem">
+                            <Visualisation
+                                render={true}
+                                entities={this.state.entities}
+                                width={400}
+                                height={400} />
+                        </div>
+                        <div  className="sim-rowitem">
+                            <Controls className="sim-rowitem"
+                                animating={this.state.animating}
+                                reset={this.reset}
+                                start={this.start}
+                                step={this.step}
+                                stop={this.stop} />
+                        </div>
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }

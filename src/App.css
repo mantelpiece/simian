@@ -11,5 +11,8 @@
 
 .sim-rowitem {
     flex: content;
-    margin: 1rem;
+}
+
+.sim-rowitem button {
+    flex: content;
 }
