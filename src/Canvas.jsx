@@ -25,21 +25,19 @@ class Canvas extends React.Component {
     }
 
     updateCanvas() {
-        if (this.props.render) {
-            const canvasContext = this.canvasContext; // this.canvasRef.current.getContext('2d');
+        const canvasContext = this.canvasContext; // this.canvasRef.current.getContext('2d');
 
-            canvasContext.clearRect(0, 0, this.props.width, this.props.height);
-            canvasContext.save();
+        canvasContext.clearRect(0, 0, this.props.width, this.props.height);
+        canvasContext.save();
 
-            canvasContext.fillStyle = 'grey';
-            for (const entity of this.props.entities) {
-                canvasContext.beginPath();
-                canvasContext.ellipse(entity.position[0], entity.position[1], 5, 5, 0, 0, TWO_PI);
-                canvasContext.fill();
-            }
-
-            canvasContext.restore();
+        canvasContext.fillStyle = 'grey';
+        for (const entity of this.props.entities) {
+            canvasContext.beginPath();
+            canvasContext.ellipse(entity.position[0], entity.position[1], 5, 5, 0, 0, TWO_PI);
+            canvasContext.fill();
         }
+
+        canvasContext.restore();
     }
 
     saveContext(canvasContext) {

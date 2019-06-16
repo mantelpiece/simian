@@ -8,6 +8,7 @@ const Controls = (props) => {
         <div className="sim-row">
             <div className="sim-rowitem">
                 <select className="sim-ctrl" id="simulation-select">
+                    <option>Randomly flying entities</option>
                 </select>
             </div>
         </div>

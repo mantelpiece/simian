@@ -6,9 +6,7 @@ import CssBaseLine from '@material-ui/core/CssBaseline';
 import './App.css';
 
 
-import Controls from './Controls';
 import SimulationAnimation from './SimulationAnimation';
-import Visualisation from './Visualisation';
 
 
 class App extends React.Component {
@@ -31,28 +29,12 @@ class App extends React.Component {
             <React.Fragment>
                 <CssBaseLine />
                 <div className="sim-App">
-                    <div className="sim-row">
-                        <div  className="sim-rowitem">
-                            <SimulationAnimation
-                                animating={true}
-                                width={this.width}
-                                height={this.height} />
+                    <h1>Simulation Engine Doodad Thingo</h1>
 
-                            {/* <Visualisation
-                                render={true}
-                                entities={this.state.entities}/> */}
-                        </div>
-                        {/*
-                        <div  className="sim-rowitem">
-                            <Controls className="sim-rowitem"
-                                animating={this.state.animating}
-                                reset={this.reset}
-                                start={this.start}
-                                step={this.step}
-                                stop={this.stop} />
-                        </div>
-                        */}
-                    </div>
+                    <SimulationAnimation
+                        animating={true}
+                        width={this.width}
+                        height={this.height} />
                 </div>
             </React.Fragment>
         );

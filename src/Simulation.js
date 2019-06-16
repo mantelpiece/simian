@@ -56,6 +56,7 @@ class Simulation {
     }
 
     updateEntity(dt, entity, others) {
+        // FIXME: Map the entities to the composition of all these functions.
         return this.applyPhysics(dt, this.applyEntityCollison(dt, this.applyWallCollison(dt, entity), others));
     }
 
