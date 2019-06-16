@@ -7,7 +7,7 @@ import './App.css';
 
 
 import Controls from './Controls';
-import Simulation from './Simulation';
+import SimulationAnimation from './SimulationAnimation';
 import Visualisation from './Visualisation';
 
 
@@ -24,74 +24,6 @@ class App extends React.Component {
 
         this.width = 400;
         this.height = 400;
-
-        this.frameTime = 1 / 15;
-        this.simulation = this.getOrCreateSimulation();
-    }
-
-    reset = () => {
-        this.simulation = new Simulation(this.width, this.height);
-        return this.simulation;
-    }
-
-    start = () => {
-        if (this.state.animating) return;
-        this.simulation = this.getOrCreateSimulation();
-
-        this.setState(state => ({
-            ...state,
-            animating: true
-        }));
-
-        let lastTime = null;
-        const frametime = 1 / 60 * 1000;
-        const update = (time) => {
-            if (!lastTime) lastTime = time;
-            const dt = time - lastTime;
-
-            if (dt >= frametime) {
-                const entities = this.simulation.step(dt / 1000 /* dt in seconds */);
-
-                this.setState(state => ({
-                    ...state,
-                    entities
-                }));
-
-                lastTime = time;
-            }
-
-            if (this.state.animating) {
-                window.requestAnimationFrame(update);
-            }
-        };
-
-        window.requestAnimationFrame(update);
-    }
-
-    step = () => {
-        if (this.state.animating) return;
-
-        const entities = this.simulation.step(0.1 /* seconds */);
-        this.setState(state => ({
-            ...state,
-            entities
-        }));
-    }
-
-    stop = () => {
-        if (!this.state.animating) return;
-
-        this.setState(state => ({
-            ...state,
-            animating: false
-        }));
-    }
-
-    getOrCreateSimulation = () => {
-        if (!this.simulation) {
-            this.simulation = new Simulation(this.width, this.height);
-        }
-        return this.simulation;
     }
 
     render = () => {
@@ -101,12 +33,16 @@ class App extends React.Component {
                 <div className="sim-App">
                     <div className="sim-row">
                         <div  className="sim-rowitem">
-                            <Visualisation
+                            <SimulationAnimation
+                                animating={true}
+                                width={this.width}
+                                height={this.height} />
+
+                            {/* <Visualisation
                                 render={true}
-                                entities={this.state.entities}
-                                width={400}
-                                height={400} />
+                                entities={this.state.entities}/> */}
                         </div>
+                        {/*
                         <div  className="sim-rowitem">
                             <Controls className="sim-rowitem"
                                 animating={this.state.animating}
@@ -115,6 +51,7 @@ class App extends React.Component {
                                 step={this.step}
                                 stop={this.stop} />
                         </div>
+                        */}
                     </div>
                 </div>
             </React.Fragment>
