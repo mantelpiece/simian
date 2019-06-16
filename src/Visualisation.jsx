@@ -30,7 +30,7 @@ class Visualisation extends React.Component {
                     entities={this.props.entities}
                     width={this.props.width}
                     height={this.props.height} />
-                { this.renderEntities() }
+                { /* this.renderEntities() */ }
             </div>
         );
     }

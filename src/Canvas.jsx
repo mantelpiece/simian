@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 
+import PureCanvas from './PureCanvas';
+
+
 import './Canvas.css';
 
 
@@ -9,9 +12,12 @@ const TWO_PI = 2 * Math.PI;
 
 
 class Canvas extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
         this.canvasRef = React.createRef();
+        this.saveContext = this.saveContext.bind(this);
+        this.updateCanvas = this.updateCanvas.bind(this);
     }
 
     componentDidUpdate() {
@@ -20,25 +26,33 @@ class Canvas extends React.Component {
 
     updateCanvas() {
         if (this.props.render) {
-            const context = this.canvasRef.current.getContext('2d');
-            context.clearRect(0, 0, this.props.width, this.props.height);
-            context.fillStyle = 'grey';
+            const canvasContext = this.canvasContext; // this.canvasRef.current.getContext('2d');
+
+            canvasContext.clearRect(0, 0, this.props.width, this.props.height);
+            canvasContext.save();
+
+            canvasContext.fillStyle = 'grey';
             for (const entity of this.props.entities) {
-                context.beginPath();
-                context.ellipse(entity.position[0], entity.position[1], 5, 5, 0, 0, TWO_PI);
-                context.fill();
+                canvasContext.beginPath();
+                canvasContext.ellipse(entity.position[0], entity.position[1], 5, 5, 0, 0, TWO_PI);
+                canvasContext.fill();
             }
+
+            canvasContext.restore();
         }
+    }
+
+    saveContext(canvasContext) {
+        this.canvasContext = canvasContext;
     }
 
     render() {
         return(
             <div className="Canvas">
-                <canvas
-                    ref={this.canvasRef}
-                    className="scene"
+                <PureCanvas
+                    saveContext={this.saveContext}
                     width={this.props.width}
-                    height={this.props.height}></canvas>
+                    height={this.props.height} />
             </div>
         );
     }
